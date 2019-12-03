@@ -15,5 +15,9 @@ func main() {
 		writer.WriteHeader(http.StatusUnauthorized)
 		writer.Write([]byte(message))
 	})
-	http.ListenAndServe(":8080", nil)
+
+	fs := http.FileServer(http.Dir("static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
+	http.ListenAndServe(":80", nil)
 }
